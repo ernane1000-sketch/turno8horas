@@ -20,6 +20,13 @@
     <p id="subtituloMes" class="text-xs text-slate-400 font-semibold mt-1">CARREGANDO...</p>
   </header>
 
+  <!-- BOTÃO DE NOTIFICAÇÕES / LEMBRETE -->
+  <div class="mb-4 text-center">
+    <button onclick="pedirPermissaoNotificacao()" id="btnNotif" class="w-full py-2 px-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
+      <span>🔔 Ativar Alerta Diário de Turno</span>
+    </button>
+  </div>
+
   <!-- SELEÇÃO DE EQUIPE -->
   <div class="glass p-3 rounded-xl mb-4 text-center">
     <label class="block text-xs text-slate-400 mb-2 font-bold">SELECIONE A EQUIPE:</label>
@@ -203,11 +210,40 @@
       document.getElementById("textoTurno").innerText = "Selecione um dia na tabela para ver o horário.";
     }
 
+    // Função para ativar notificações locais no navegador / telemóvel
+    function pedirPermissaoNotificacao() {
+      if (!("Notification" in window)) {
+        alert("Este navegador não suporta notificações.");
+        return;
+      }
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          alert("Notificações ativadas com sucesso!");
+          const hoje = new Date();
+          const dadosHoje = obterDadosDia(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), equipeSelecionada);
+          
+          if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+              title: `Turno Equipe ${equipeSelecionada} Hoje`,
+              body: `Horário: ${dadosHoje[1]}`
+            });
+          } else {
+            new Notification(`Turno Equipe ${equipeSelecionada} Hoje`, {
+              body: `Horário: ${dadosHoje[1]}`,
+              icon: 'https://cdn-icons-png.flaticon.com/512/3652/3652191.png'
+            });
+          }
+        } else {
+          alert("Permissão para notificações negada.");
+        }
+      });
+    }
+
     renderizarCalendario();
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js')
-        .then(() => console.log("Service Worker registado com sucesso!"))
+        .then(() => console.log("Service Worker e Cache Offline configurados com sucesso!"))
         .catch((err) => console.log("Erro ao registar Service Worker:", err));
     }
   </script>

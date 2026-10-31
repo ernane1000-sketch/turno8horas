@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="screen-orientation" content="portrait">
+  <meta name="x5-orientation" content="portrait">
   <title>Turno Rotativo</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
@@ -76,6 +78,11 @@
   </div>
 
   <script>
+    // Tenta bloquear a orientação do ecrã para retrato via código
+    if (window.screen && window.screen.orientation && window.screen.orientation.lock) {
+      window.screen.orientation.lock("portrait").catch(() => {});
+    }
+
     const ciclo = [
       ["3° dia|07:00 às 15:00h", "2° dia|15:00 às 23:00h", "2° dia|Folga grande", "2° dia|23:00 às 07:00h"],
       ["4° dia|07:00 às 15:00h", "3° dia|15:00 às 23:00h", "3° dia|Folga grande", "3° dia|23:00 às 07:00h"],

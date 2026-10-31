@@ -46,8 +46,8 @@
 
   <!-- DETALHES DO DIA SELECIONADO -->
   <div class="glass p-4 rounded-xl border-l-4 border-blue-500 mb-4" id="painelDetalhes">
-    <div id="textoDiaEscala" class="text-xs text-slate-400 font-semibold">Clique em um dia do calendário</div>
-    <div id="textoTurno" class="text-lg font-bold text-white mt-1">Selecione uma data acima</div>
+    <div id="textoDiaEscala" class="text-xs text-slate-400 font-semibold">Detalhes do turno</div>
+    <div id="textoTurno" class="text-lg font-bold text-white mt-1">Selecione um dia na tabela para ver o horário.</div>
   </div>
 
   <!-- LEGENDA DE CORES -->
@@ -149,7 +149,7 @@
       const mes = dataAtual.getMonth();
       const dados = obterDadosDia(ano, mes, dia, equipeSelecionada);
 
-      document.getElementById("textoDiaEscala").innerText = `Dia da escala: ${dia}/${mes + 1}/${ano} (${dados[0]})`;
+      document.getElementById("textoDiaEscala").innerText = `Equipe ${equipeSelecionada} — Dia ${dia}/${mes + 1}/${ano} (${dados[0]})`;
       document.getElementById("textoTurno").innerText = `Horário: ${dados[1]}`;
     }
 
@@ -194,9 +194,12 @@
         }
 
         celula.onclick = () => selecionarDia(dia);
-        grid.appendChild(celual = celula);
+        grid.appendChild(celula);
       }
-      selecionarDia(1);
+      
+      // Mantém a caixa de detalhes limpa ao carregar o mês
+      document.getElementById("textoDiaEscala").innerText = "Detalhes do turno";
+      document.getElementById("textoTurno").innerText = "Selecione um dia na tabela para ver o horário.";
     }
 
     renderizarCalendario();

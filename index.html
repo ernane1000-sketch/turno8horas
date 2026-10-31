@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Turno Rotativo</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
@@ -197,12 +199,17 @@
         grid.appendChild(celula);
       }
       
-      // Mantém a caixa de detalhes limpa ao carregar o mês
       document.getElementById("textoDiaEscala").innerText = "Detalhes do turno";
       document.getElementById("textoTurno").innerText = "Selecione um dia na tabela para ver o horário.";
     }
 
     renderizarCalendario();
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("Service Worker registado com sucesso!"))
+        .catch((err) => console.log("Erro ao registar Service Worker:", err));
+    }
   </script>
 </body>
 </html>

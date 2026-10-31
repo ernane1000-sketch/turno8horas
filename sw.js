@@ -1,4 +1,4 @@
-const CACHE_NAME = 'turno-rotativo-v2';
+const CACHE_NAME = 'turno-rotativo-v3';
 const urlsToCache = [
   './index.html',
   './manifest.json',
